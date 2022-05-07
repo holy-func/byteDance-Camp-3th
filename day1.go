@@ -48,14 +48,13 @@ type CY struct {
 	} `json:"dictionary"`
 }
 
-func (d *CY) output(word string) {
-	fmt.Println(word, "UK:", d.Dictionary.Prons.En, "US:", d.Dictionary.Prons.EnUs)
+func (d *CY) output() {
+	fmt.Println("UK:", d.Dictionary.Prons.En, "US:", d.Dictionary.Prons.EnUs)
 	for _, item := range d.Dictionary.Explanations {
 		fmt.Println(strings.TrimSpace(item))
 	}
 }
-func (y *YouDao) output(word string) {
-	fmt.Println(word)
+func (y *YouDao) output() {
 	for _, item := range strings.Split(y.Data.Entries[0].Explain, ";") {
 		fmt.Println(item)
 	}
@@ -110,11 +109,12 @@ func queryWordYD(word string) *async.GoPromise {
 }
 
 type queryResponse interface {
-	output(string)
+	output()
 }
 
 func output(ret queryResponse, word string) {
-	ret.output(word)
+	fmt.Println(word)
+	ret.output()
 }
 func queryWordCY(word string) *async.GoPromise {
 	return async.Promise(func(resolve, reject async.Handler) {
